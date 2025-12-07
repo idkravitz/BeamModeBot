@@ -34,20 +34,21 @@ async def _main_async():
                         mime_type='image/png',
                         attributes=[DocumentAttributeImageSize(w=320, h=320)]
                     )
+            buttons = [[Button.switch_inline('Share your beam mode!', query='')]]
             await event.answer([
                 builder.article(
                     title=('How Beam Mode I am?' if query_text == "" else f"How Beam Mode is {query_text}"), 
                     text=(f'I am at {perc}% beam mode' if query_text == "" else f'{query_text} is at {perc}% beam mode'),
                     description="Send your current Beam Mode to this chat.",
                     thumb=thumb,
-                    buttons=[[Button.switch_inline('Share your beam mode!', query='')]]
-
+                    buttons=buttons
                 ),
                 builder.article(
                     title='HALP!',
                     text="Press the 1st (top) button, you retard",
                     description="Send the usage guideliness to this chat.",
-                    thumb = thumb
+                    thumb = thumb,
+                    buttons=buttons
                 )
             ])
 
