@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from telethon.types import InputWebDocument, DocumentAttributeImageSize
 from telethon.tl.custom.button import Button
 
-from .random_func import random_func
+from .pseudorand import roll_100_for_user, roll_100_for_string
 from .config import get_tg_config
 from telethon import TelegramClient, events
 
@@ -36,7 +36,7 @@ buttons=[[Button.switch_inline('Share your beam mode!', query='')]])
             unix_epoch = int(time.time())
             query_text = event.text.strip() if event.text else ""
 
-            perc = random_func(sender_id, unix_epoch)
+            perc = roll_100_for_user(sender_id, unix_epoch) if query_text == "" else roll_100_for_string(query_text, unix_epoch)
             thumb = InputWebDocument(
                         url='https://raw.githubusercontent.com/idkravitz/BeamModeBot-assets/master/thumb.png',
                         size=0,
