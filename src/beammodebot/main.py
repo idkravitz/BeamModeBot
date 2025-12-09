@@ -12,7 +12,7 @@ from telethon import TelegramClient, events
 async def _main_async():
     load_dotenv()
 
-    api_id, api_hash, BOT_TOKEN = get_tg_config()
+    api_id, api_hash, BOT_TOKEN, dev_mode = get_tg_config()
 
     """Main entry point for the bot."""
     print("BeamModeBot starting...")
@@ -37,6 +37,13 @@ buttons=[[Button.switch_inline('Share your beam mode!', query='')]])
             query_text = event.text.strip() if event.text else ""
 
             perc = roll100((sender_id if query_text == "" else query_text), unix_epoch)
+            commentary = (
+                "You are at risk of being banned." if perc < 10
+                else "Dan is paying attention." if perc < 30
+                else "Gotta get your beam up." if perc < 50
+                else "Not bad. not good. It's time to pay attention." if perc < 70
+                else "Impressive. Very nice."
+            )
             thumb = InputWebDocument(
                         url='https://raw.githubusercontent.com/idkravitz/BeamModeBot-assets/master/thumb.png',
                         size=0,
@@ -44,11 +51,13 @@ buttons=[[Button.switch_inline('Share your beam mode!', query='')]])
                         attributes=[DocumentAttributeImageSize(w=320, h=320)]
                     )
             buttons = [[Button.switch_inline('Share your beam mode!', query='')]]
+            result_text = f'I am at {perc}% beam mode' if query_text == "" else f'{query_text} is at {perc}% beam mode'
+            text = f'{result_text}. {commentary}'
             await event.answer([
                 builder.article(
                     title=('How Beam Mode I am?' if query_text == "" else f"How Beam Mode is {query_text}"), 
-                    text=(f'I am at {perc}% beam mode' if query_text == "" else f'{query_text} is at {perc}% beam mode'),
-                    description="Send your current Beam Mode to this chat.",
+                    text=text,
+                    description=(f"[{perc}%]" if dev_mode else "") + "Send your current Beam Mode to this chat.",
                     thumb=thumb,
                     buttons=buttons
                 ),

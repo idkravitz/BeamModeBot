@@ -1,6 +1,6 @@
 import os
 
-def get_tg_config() -> tuple[int, str, str]:
+def get_tg_config() -> tuple[int, str, str, bool]:
     """
     Get the Telegram API configuration from the environment variables.
     
@@ -13,6 +13,8 @@ def get_tg_config() -> tuple[int, str, str]:
     api_id = os.getenv('api_id')
     api_hash = os.getenv('api_hash')
     BOT_TOKEN = os.getenv('BOT_TOKEN')
+    DEV_MODE = os.getenv('DEV_MODE') or 'false'
+    DEV_MODE = DEV_MODE.lower() == 'true'
     
     if api_id is None:
         raise ValueError("Environment variable 'api_id' is not set")
@@ -28,4 +30,4 @@ def get_tg_config() -> tuple[int, str, str]:
     except ValueError as e:
         raise ValueError(f"Environment variable 'api_id' must be a valid integer, got '{api_id}'") from e
 
-    return api_id_int, api_hash, BOT_TOKEN
+    return api_id_int, api_hash, BOT_TOKEN, DEV_MODE
