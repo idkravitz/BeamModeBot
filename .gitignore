@@ -1,6 +1,7 @@
 .env
 *.session
 *.session-journal
+userlist.txt
 
 # Python
 __pycache__/

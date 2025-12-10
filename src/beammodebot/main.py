@@ -1,12 +1,14 @@
 import asyncio
 import time
+from pathlib import Path
 from dotenv import load_dotenv
 from telethon.types import InputWebDocument, DocumentAttributeImageSize
 from telethon.tl.custom.button import Button
 
-from .pseudorand import roll100
+import beammodebot.pseudorand as pseudorand
 from .config import get_tg_config
 from telethon import TelegramClient, events
+import random
 
 
 async def _main_async():
@@ -16,6 +18,12 @@ async def _main_async():
 
     """Main entry point for the bot."""
     print("BeamModeBot starting...")
+
+    userlist_file = Path("./userlist.txt")
+    users = []
+    if userlist_file.exists():
+        with userlist_file.open('r', encoding='utf-8') as fh:
+            users = [l.strip() for l in fh.readlines()]
 
     async with TelegramClient('bot', api_id, api_hash) as bot:
         await bot.start(bot_token=BOT_TOKEN)
@@ -31,12 +39,14 @@ buttons=[[Button.switch_inline('Share your beam mode!', query='')]])
 
         @bot.on(events.InlineQuery)
         async def handler(event: events.InlineQuery.Event):
+            nonlocal users
+
             builder = event.builder
             sender_id = event.sender_id
             unix_epoch = int(time.time())
             query_text = event.text.strip() if event.text else ""
 
-            perc = roll100((sender_id if query_text == "" else query_text), unix_epoch)
+            perc = pseudorand.roll100((sender_id if query_text == "" else query_text), unix_epoch)
             commentary = (
                 "You are at risk of being banned." if perc < 10
                 else "Dan is paying attention." if perc < 30
@@ -53,7 +63,8 @@ buttons=[[Button.switch_inline('Share your beam mode!', query='')]])
             buttons = [[Button.switch_inline('Share your beam mode!', query='')]]
             result_text = f'I am at {perc}% beam mode' if query_text == "" else f'{query_text} is at {perc}% beam mode'
             text = f'{result_text}. {commentary}'
-            await event.answer([
+
+            articles = [
                 builder.article(
                     title=('How Beam Mode I am?' if query_text == "" else f"How Beam Mode is {query_text}"), 
                     text=text,
@@ -68,7 +79,41 @@ buttons=[[Button.switch_inline('Share your beam mode!', query='')]])
                     thumb = thumb,
                     buttons=buttons
                 )
-            ])
+            ]
+
+            if len(users) > 0:
+                seed_hash = pseudorand.hash("spin", unix_epoch, 60)
+                speen_wheel_pick = users[seed_hash % len(users)]
+                articles.append(builder.article(
+                    title='Spin the Wheel',
+                    text=f'**Beam Wheel Result**: the winner is `{speen_wheel_pick}`',
+                    description='Let\'s see who\'s lucky',
+                    thumb=thumb
+                ))
+                rng = random.Random(seed_hash)
+                top5 = rng.sample(users, 5)
+                scores_top = [rng.randint(85, 100) for _ in top5]
+                users_not_top = [u for u in users if u not in top5]
+                bottom5 = rng.sample(users_not_top, 5)
+                scores_bottom = [rng.randint(0, 15) for _ in top5]
+                scores_bottom.sort(reverse=True)
+                scores_top.sort(reverse=True)
+                articles.append(builder.article(
+                    title='Top 5',
+                    description='Top 5 Beamers Right Now',
+                    thumb=thumb,
+                    text="**Top 5 Beamers Right Now:**\n\n" + "\n".join([f'{place}. `{name}` - **{score}%**' for place, (name, score) in enumerate(zip(top5, scores_top), 1)])
+                ))
+                articles.append(builder.article(
+                    title='Bottom 5',
+                    description='Bottom 5 Beamers Right Now',
+                    thumb=thumb,
+                    text="**Bottom 5 Beamers Right Now:**\n\n" + "\n".join([f'{place}. `{name}` - **{score}%**' for place, (name, score) in enumerate(zip(bottom5, scores_bottom), len(users) - 4)])
+                ))
+
+
+
+            await event.answer(articles)
 
         await bot.run_until_disconnected()
 
