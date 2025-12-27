@@ -46,9 +46,11 @@ buttons=[[Button.switch_inline('Share your beam mode!', query='')]])
             unix_epoch = int(time.time())
             query_text = event.text.strip() if event.text else ""
 
-            perc = pseudorand.roll100((sender_id if query_text == "" else query_text), unix_epoch)
+            perc = pseudorand.roll150((sender_id if query_text == "" else query_text), unix_epoch) - 50
+
             commentary = (
-                "You are at risk of being banned." if perc < 10
+                "You are at negative beam mode and officially in beam debt." if perc < 0
+                else "You are at risk of being banned." if perc < 10
                 else "Dan is paying attention." if perc < 30
                 else "Gotta get your beam up." if perc < 50
                 else "Not bad. not good. It's time to pay attention." if perc < 70
@@ -95,20 +97,20 @@ buttons=[[Button.switch_inline('Share your beam mode!', query='')]])
                 scores_top = [rng.randint(85, 100) for _ in top5]
                 users_not_top = [u for u in users if u not in top5]
                 bottom5 = rng.sample(users_not_top, 5)
-                scores_bottom = [rng.randint(0, 15) for _ in top5]
+                scores_bottom = [rng.randint(-50, 15) for _ in top5]
                 scores_bottom.sort(reverse=True)
                 scores_top.sort(reverse=True)
                 articles.append(builder.article(
                     title='Top 5',
                     description='Top 5 Beamers Right Now',
                     thumb=thumb,
-                    text="**Top 5 Beamers Right Now:**\n\n" + "\n".join([f'{place}. `{name}` - **{score}%**' for place, (name, score) in enumerate(zip(top5, scores_top), 1)])
+                    text="**Top 5 Beamers Right Now:**\n\n" + "\n".join([f'{place}. `{name}`: **{score}%**' for place, (name, score) in enumerate(zip(top5, scores_top), 1)])
                 ))
                 articles.append(builder.article(
                     title='Bottom 5',
                     description='Bottom 5 Beamers Right Now',
                     thumb=thumb,
-                    text="**Bottom 5 Beamers Right Now:**\n\n" + "\n".join([f'{place}. `{name}` - **{score}%**' for place, (name, score) in enumerate(zip(bottom5, scores_bottom), len(users) - 4)])
+                    text="**Bottom 5 Beamers Right Now:**\n\n" + "\n".join([f'{place}. `{name}`: **{score}%**' for place, (name, score) in enumerate(zip(bottom5, scores_bottom), len(users) - 4)])
                 ))
 
 
