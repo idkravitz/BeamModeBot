@@ -55,7 +55,7 @@ buttons=[[Button.switch_inline('Share your beam mode!', query='')]])
                 else "Gotta get your beam up." if perc < 50
                 else "Not bad. not good. It's time to pay attention." if perc < 70
                 else "Impressive. Very nice." if perc < 100
-                else "You have reached the pinnacle of beam mode. This is good for 1 “get out of Dan banning you for free” card. Congrats!"
+                else "You have reached the pinnacle of beam mode."
             )
             thumb = InputWebDocument(
                         url='https://raw.githubusercontent.com/idkravitz/BeamModeBot-assets/master/thumb.png',
