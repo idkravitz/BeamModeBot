@@ -46,7 +46,7 @@ buttons=[[Button.switch_inline('Share your beam mode!', query='')]])
             unix_epoch = int(time.time())
             query_text = event.text.strip() if event.text else ""
 
-            perc = pseudorand.roll150((sender_id if query_text == "" else query_text), unix_epoch) - 50
+            perc = pseudorand.roll150((sender_id if query_text == "" else query_text), unix_epoch) - 25
 
             commentary = (
                 "You are at negative beam mode and officially in beam debt." if perc < 0
@@ -54,7 +54,8 @@ buttons=[[Button.switch_inline('Share your beam mode!', query='')]])
                 else "Dan is paying attention." if perc < 30
                 else "Gotta get your beam up." if perc < 50
                 else "Not bad. not good. It's time to pay attention." if perc < 70
-                else "Impressive. Very nice."
+                else "Impressive. Very nice." if perc < 100
+                else "You have reached the pinnacle of beam mode. This is good for 1 “get out of Dan banning you for free” card. Congrats!"
             )
             thumb = InputWebDocument(
                         url='https://raw.githubusercontent.com/idkravitz/BeamModeBot-assets/master/thumb.png',
@@ -94,10 +95,10 @@ buttons=[[Button.switch_inline('Share your beam mode!', query='')]])
                 ))
                 rng = random.Random(seed_hash)
                 top5 = rng.sample(users, 5)
-                scores_top = [rng.randint(85, 100) for _ in top5]
+                scores_top = [rng.randint(75, 125) for _ in top5]
                 users_not_top = [u for u in users if u not in top5]
                 bottom5 = rng.sample(users_not_top, 5)
-                scores_bottom = [rng.randint(-50, 15) for _ in top5]
+                scores_bottom = [rng.randint(-25, 25) for _ in bottom5]
                 scores_bottom.sort(reverse=True)
                 scores_top.sort(reverse=True)
                 articles.append(builder.article(
