@@ -57,7 +57,7 @@ buttons=[[Button.switch_inline('Share your beam mode!', query='')]])
                 else "Impressive. Very nice." if perc < 100
                 else "One small step for the beams, one giant leap for the skrumps." if perc < 125
                 else "Slowly and then all at once." if perc < 150
-                else "/beams_to_a_billion" if perc < 175
+                else "\n/beams_to_a_billion" if perc < 175
                 else "@lakejynch THE GOLDEN BEAM RUN IS HERE AND IT IS BEAUTIFUL."
             )
             thumb = InputWebDocument(
