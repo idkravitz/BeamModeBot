@@ -46,19 +46,20 @@ buttons=[[Button.switch_inline('Share your beam mode!', query='')]])
             unix_epoch = int(time.time())
             query_text = event.text.strip() if event.text else ""
 
-            perc = pseudorand.roll((sender_id if query_text == "" else query_text), unix_epoch,  -25, 220)
+            perc = pseudorand.roll((sender_id if query_text == "" else query_text), unix_epoch,  -150, 330)
 
             commentary = (
-                "Beams will not stand for such a disgraceful score. Do better." if perc < 0
-                else "You are at risk of being banned." if perc < 10
-                else "Dan is paying attention." if perc < 30
-                else "Gotta get your beam up." if perc < 50
-                else "Not bad. not good. It's time to pay attention." if perc < 70
-                else "Impressive. Very nice." if perc < 100
-                else "One small step for the beams, one giant leap for the skrumps." if perc < 125
-                else "Slowly and then all at once." if perc < 150
-                else "\n/beams_to_a_billion" if perc < 175
-                else "@lakejynch THE GOLDEN BEAM RUN IS HERE AND IT IS BEAUTIFUL."
+                "Dan will not have this. Your fat has been written." if perc < -100
+                else "@lakejynch please observe this and contact Dan at once. We will not stand for this." if perc < -50
+                else "You need to log off and think about what you have done." if perc < 0
+                else "Whatever. In the olden days this was good, but with beamflation this is nothing." if perc < 50
+                else "Fine...." if perc < 100
+                else "One small step for the beams, one giant leap for the skrumps." if perc < 150
+                else "Slowly and then all at once." if perc < 200
+                else "This good for 1 \"get out of beam free\" card the next time you roll a negative and Dan considers purging you." if perc < 250
+                else "beams_to_a_billion" if perc < 275
+                else "@lakejynch THE GOLDEN BEAM RUN IS HERE AND IT IS BEAUTIFUL. /GOLDEN_BEAM_RUN" if perc < 310
+                else "MAY THE BEAMS BLESS YOU WITH THE FRUIT OF THE VINE AND A LIFETIME OF GLORY. YOU ARE LOVED. YOU ARE CHERISED. YOU NATURALLY ATTRACT POSITIVITY. YOU ARE IN A LEAGUE OF YOUR OWN."
             )
             thumb = InputWebDocument(
                         url='https://raw.githubusercontent.com/idkravitz/BeamModeBot-assets/master/thumb.png',
@@ -98,10 +99,10 @@ buttons=[[Button.switch_inline('Share your beam mode!', query='')]])
                 ))
                 rng = random.Random(seed_hash)
                 top5 = rng.sample(users, 5)
-                scores_top = [rng.randint(170, 220) for _ in top5]
+                scores_top = [rng.randint(330-150, 330) for _ in top5]
                 users_not_top = [u for u in users if u not in top5]
                 bottom5 = rng.sample(users_not_top, 5)
-                scores_bottom = [rng.randint(-25, 25) for _ in bottom5]
+                scores_bottom = [rng.randint(-150, 0) for _ in bottom5]
                 scores_bottom.sort(reverse=True)
                 scores_top.sort(reverse=True)
                 articles.append(builder.article(
