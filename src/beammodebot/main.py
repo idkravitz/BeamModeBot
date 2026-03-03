@@ -49,14 +49,14 @@ buttons=[[Button.switch_inline('Share your beam mode!', query='')]])
             perc = pseudorand.roll((sender_id if query_text == "" else query_text), unix_epoch,  -150, 330)
 
             commentary = (
-                "Dan will not have this. Your fat has been written." if perc < -100
+                "Dan will not have this. Your fate has been written." if perc < -100
                 else "@lakejynch please observe this and contact Dan at once. We will not stand for this." if perc < -50
                 else "You need to log off and think about what you have done." if perc < 0
                 else "Whatever. In the olden days this was good, but with beamflation this is nothing." if perc < 50
                 else "Fine...." if perc < 100
                 else "One small step for the beams, one giant leap for the skrumps." if perc < 150
                 else "Slowly and then all at once." if perc < 200
-                else "This good for 1 \"get out of beam free\" card the next time you roll a negative and Dan considers purging you." if perc < 250
+                else "This is good for 1 \"get out of beam free\" card the next time you roll a negative and Dan considers purging you." if perc < 250
                 else "beams_to_a_billion" if perc < 275
                 else "@lakejynch THE GOLDEN BEAM RUN IS HERE AND IT IS BEAUTIFUL. /GOLDEN_BEAM_RUN" if perc < 310
                 else "MAY THE BEAMS BLESS YOU WITH THE FRUIT OF THE VINE AND A LIFETIME OF GLORY. YOU ARE LOVED. YOU ARE CHERISED. YOU NATURALLY ATTRACT POSITIVITY. YOU ARE IN A LEAGUE OF YOUR OWN."
